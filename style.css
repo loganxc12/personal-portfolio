@@ -1,0 +1,46 @@
+@charset "UTF-8";
+
+body {
+    background-image: url("epic.jpg");
+    background-repeat: no-repeat;
+}
+
+.bg2 
+{
+  background-image: url(/another/image/url/there.jpg);
+}
+
+#knock {
+    text-align: center;
+    margin-top: 20%;
+}
+
+#boom1, #boom2, #boom3, #boom4 {
+    text-align: center;
+    margin-top: 60px;
+}
+
+#logo {
+    text-align: center;
+    text-transform: uppercase;
+    color: #2386E0;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    text-decoration: underline;
+    font-size: 3em;
+}
+
+button {
+    border: 2px solid #b77b31;
+    outline: 0;
+    font-size: 1.5em;
+    background-color: #E89D3C;
+    padding: 20px;
+    text-transform: uppercase;
+    color: #fff;
+    font-family: 'Montserrat', sans-serif;
+}
+
+button:hover {
+    background-color: #b77b31;
+}

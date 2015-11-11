@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Practice</title>
+    <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+</head>
+<body>
+<h1 id="logo">The Best Website Of All Time</h1>
+<div id='boom1'>
+<button>And His Name Is...</button>
+</div>
+<div id='boom2'>
+<button>That's Pretty Neat</button>
+</div>
+<div id='boom3'>
+<button>Totinos Pizza rolls</button>
+</div>
+<div id='boom4'>
+<button>Deez Nuts!</button>
+</div>
+    
+<audio id="jcena" preload="auto">
+    <source src="http://www.myinstants.com/media/sounds/and-his-name-is-john-cena-1.mp3"></source>
+</audio>
+    
+<audio id="neat" preload="auto">
+    <source src="http://www.myinstants.com/media/sounds/how-neat-is-that.mp3"></source>
+</audio>
+
+<audio id="rolls" preload="auto">
+    <source src='pizzaboy.mp3'></source>
+</audio>
+
+<audio id="nuts" preload="auto">
+    <source src="http://www.myinstants.com/media/sounds/deez-nuts-got-eem-original-vine-mp3cut.mp3"></source>
+</audio>
+       
+
+    <script type="text/javascript">
+        var cena = $('#jcena')[0];
+        var neato = $('#neat')[0];
+        var pizza = $('#rolls')[0];
+        var deez = $('#nuts')[0];
+        $('document').ready(function() {
+            $('#boom1').click(function() {
+                cena.play();
+            });
+        });
+        $('document').ready(function() {
+            $('#boom2').click(function() {
+                neato.play();
+            });
+        });
+        $('document').ready(function() {
+            $('#boom3').click(function() {
+                pizza.play();
+            });
+        });
+        $('document').ready(function() {
+            $('#boom4').click(function() {
+                deez.play();
+            });
+        });
+            
+    </script>
+    
+</body>
+</html>
