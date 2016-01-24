@@ -1,0 +1,391 @@
+Basic problem angular solves: update ONE SIDE (html/javascript) and have the other one update automatically. Limit complexity of manually managing DOM + logic + data.
+
+------
+Model = data (JS objects and variables).
+View = thing that people see (html).
+* Something else = binds model to the view and vice versa.
+------
+
+ng- : Angular custom attribute.
+
+Built in to AngularJs is the goal of *not polluting the global namespace*. Allows for big ecosystem of code that won't unintentionally collide with other code. In angular we only put ONE variable into the global namespace: our app (angular module).
+
+'Dependency Injection' : GIVING A FUNCTION AN OBJECT; rather than creating an object inside a function, you pass it to the function. Enforces strong stable architecture of web applications. All you have to do is put the name of the parameter correctly in your function ($scope, $http, $q, $watch etc.) and you'll get it. You get to take advantage of a whole ecosystem of prewritten angularjs code.
+
+$scope: complex OBJECT that you can add properties and methods to. SERVICE that's a part of the core angular module (angularJs dependency injection). Middle piece between the view and the controller. Angualar parses apart parameters (creating an array of strings) and makes decisions based on what it sees.
+
+var app = angular.module('myApp', ['ngMessages']); <-- array of other modules your app uses (modules you include here will be available within your app).
+
+- Javascript arrays can contain functions.
+- With controller syntax optimized for minified JS files, order of array elements matters, doesn't look at parameters in function.
+
+myApp.controller('mainController', ['$scope', '$log', function($scope, $log) {
+    ...controller style that will survive minification...
+}]);
+
+*Interpolation*: creating a string by combining strings and placeholders(variables). 'My name is ' + name.
+
+You can attach variable names and data to the $scope. Anything attached to the $scope becomes available in the view. You don't need to write $scope.variableName in the html, just the variable name.
+
+Anything between {{ }} will be "interpolated" by AngularJs --> interperated as Javascript.
+
+Changes to $scope/variables/data update the view in real time. View "goes along for the ride."
+
+*Directive*: An instruction to AngularJs to manipulate a piece of the DOM (Add a class, hide this, create this etc.) "Directing" what is going to happen on the webpage. (ng-controller, ng-model, ng-repeat, ng-hide etc).
+
+*ng-model: I want this element to be (two-way) bound to a specific variable in the $scope.
+----------    
+*Two way data binding*: Updates to the html automatically impact the backend code and vice versa. View changes model, model changes view.
+
+jS ASIDE: THE "EVENT LOOP" --> Elements in html "throw" events based on user input. JS has something called the "event loop"; it sits and waits (constantly listens) for events to occur (and responds if we've manually defined event listeners). AngularJs takes advantage of these events to keep track of things for you...
+
+The Javascript Event Loop + Angular Context
+
+Theres and angular "watch list"; every time you put a var/function from $scope into html, angular automatically adds a "watcher" to the watch list -- keeps track of original value and new value. Angular *digest loop*: Goes through everything in watch list and asks "has something changed?" If something has changed, it updates everywhere that's connected to it (in DOM and code)...continues until all of the old values and new values match. THIS IS WHAT AUTOMATICALLY KEEPS TRACK OF VARIABLES IN THE VIEW AND THE MODEL -- THIS (WATCHERS AND DIGEST LOOP) IS THE MIDDLE PIECE BETWEEN THE MODEL AND THE VIEW!! We can add our own watch services with $watch. Angular doesn't always realize that things have changed if changes are "outside the angular context" (can cause some confusing bugs). *$apply* explicitly tells angular to pay attention, usually don't have to use it (especially if you use angular services) --> keeps you in angular context; "ALL OR NOTHING." But the benefits outweigh the costs...
+
+|---------------|
+|               |
+|    MODEL      |
+|               |
+|---------------|
+        ^
+        | Watchers and the Digest Loop.
+        v
+|---------------|
+|               |
+|    VIEW       |
+|               |
+|---------------|
+
+---COMMON DIRECTIVES---
+
+*ng-if="any expression that returns true/false". COMPLETELY REMOVES ELEMENT from the DOM when expression evaluates to true.
+
+*ng-show="any expression that returns true/false". Same behavior as ng-if, but isn't removed from the dom entirely (simply gets css propery display: none). Shows element until expression is false.
+
+*ng-hide="any expression that returns true/false". Inverse of ng-show. Hides element until expression is false.
+
+*ng-class="{ 'class name': expression that determines whether class should be added, 'second class': second expression that determines whether class should be added }" 
+
+*ng-repeat="thing in things" Outputs the same piece of html for each item in an array.
+
+*ng-model: I want this element to be (two-way) bound to a specific variable in the $scope.
+
+*ng-click="function_on_scope()" //Others for common user events (ng-keydown etc.)
+
+*ng-cloak. Hides {{ content }} from user until Angular has finished working on it. 
+
+---MORE @ docs.angularjs.org/api
+
+*XMLHttpRequest: object that makes asynchronous request used to go out into the internet and get external data. Pretty complex to use. Angular makes it simpler with *$http service object*.
+
+*$http.get('url_address_of_api')
+    .success(function (result) {
+        $scope.rules = result;
+        //or whatever
+    })
+    .error(function (data, status) {
+        //whatever
+    })
+
+*$http.post('url_address_of_api', { what you're sending })
+    .success(function (result) {
+        //whatever
+    })
+    .error(function (data, status) {
+        //whatever
+    })
+
+*JSON = "Javascript Object Notation". Data format standard. Angular automatically converts data to JSON so that you can use it in your app.
+
+JSON EXAMPLE: 
+
+{"employees":[
+    {"firstName":"John", "lastName":"Doe"},
+    {"firstName":"Anna", "lastName":"Smith"},
+    {"firstName":"Peter", "lastName":"Jones"}
+]}
+
+*API = "Application Programming Interface"...PROGRAM-TO-PROGRAM INTERFACE(point where two things meet and interact: portion available to other programs/people; not allowed to see all of other program's backend data) particular set of rules ('code') and specifications that software programs can follow to communicate with each other. Interface between different software programs and facilitates their interaction.
+
+*$http*: service that makes AJAX requests to APIs
+
+FAKE THE DATA so that you can test one piece, verify it works, then move on (otherwise it's extremely hard to figure out where bugs are).
+
+PROGRAM    SERVER
+|            |            
+|$http ----> |API
+|            |
+
+Internet works a lot like regular mail. Every request you make contains a "header" (meta information sent with web requests) that contains 'stamp', 'address'(IP and port), 'return address', thing we're trying to send is called the "body". Domain Name Servers convert name of site to behind-the-scenes IP address shit. Web requests have stardardized on *JSON* (REST protocol).
+
+*REST*: "Represetational State Transfer"; Protocol for making web requests. Architecture style for designing networked applications. GET(asking for data), PUT (update/change existing data), POST (how we add data), DELETE(removing data). Calling these gives us a "promise", we take the promise (not knowing when we're going to get it) and add "AND .then..."
+
+    $http.get('api_url/dogs')
+        .then(function(results) {
+            var status = results.status;
+            if (status === 200) {
+            //do this 
+            } else...
+        }
+        
+    OR
+    
+    $http({
+        method: "GET",
+        url: 'api_url',
+    }).then(function(response) {
+        var status = results.status;
+        var data = response.data;
+    })
+    
+    IN SERVICE
+    
+    this.getPeeps = function() {
+        var promise = $http.get('api_url');
+        promise.then(function(response) {
+            return response.data.people;
+        });
+        return promise;
+    }
+    
+    this.updateName = function(name, id) {
+        return $http({
+            method: 'PUT',
+            url: baseUrl + id + '/?name=' + name
+    }).then(function(response){
+    
+    })
+    
+    this.addPeople = function(personObj) {
+        return $http({
+            method: 'POST',
+            url: 'base_url',
+            data: personOBj
+            }).then(function(response) {
+                //Debug to figure out what we have.
+            })
+        }
+        
+    this.deletePeeps = function(id) {
+        return $http({
+            method: 'DELETE',
+            url: baseurl + id
+        }).then(function(response){
+            //whatevs
+        })
+    }
+    
+    First function is "success" function, second function is "error" function.
+            
+            
+http.cat --> Funny pics explaining internet status codes (404, 500 etc). HTTP = "hypertext transfer protocol".
+
+Asynchronous Programming: multiple things happening at the same time... asynchronously.
+
+#1 rule when dealing with APIs: *SERVER MAKES ALL THE RULES*
+
+"It's all about the DATA".
+
+NETWORK tab in dev tools shows you all network requests made. Wicked useful, bub.
+
+*Multiple controllers, multiple views* You can bind as many different controllers to as many different associated views as you want! New instance of $scope object (and other services) created for each controller.
+
+#bookmark <-- fragment indentifier. Identifies specific point in html document (traditionally used to navigate to a section of current page). We can leverage this "hash change" (essentially a fake url) to trigger certain events/logic: FUNDAMENTAL KEY TO SINGLE PAGE APPS, leveraging fragment identifier to pretend like each hash value represents a new page. Angular already knows what's in the hash(#); $location.path()
+
+*Routing* Specifiying view changes based on hash value. NEED TO DOWNLOAD AND INCLUDE ANGULAR ROUTE FILE IN HTML (and include 'ngRoute' as a dependency in primary module). Then, below that, it looks like... 
+
+                myApp.config(function ($routeProvider) {
+
+                $routeProvider
+
+                .when ('/', {
+                    templateUrl: 'pages/main.html',
+                    controller: 'mainCtrl'
+                })
+
+                .when ('/second', {
+                    templateUrl: 'pages/second.html',
+                    controller: 'secondCtrl'
+                })
+
+                });
+                
+                //Also replace ng-controller in index.html with *ng-view*: tells                 angular to put content found in the template specified in the route,                   HERE and use specified controller.
+
+Doesn't visit the new urls, gets the content from them and uses it to update the current view.
+
+SPAs are faster than normal websites because instead of downloading entirely new files each time you navigate to a new page, you download everything ONCE and then just download select pieces as you need them; serious performance boost <-- modern choice for web apps. Because you aren't reloading the page, you're able to retain javascript variables that would normally be deleted! Remain inside same JS memory space.
+
+---ANGULAR SERVICES---
+
+*Singleton*: One AND ONLY copy of an object. Only have one of these objects, EVER. AngularJs services (injected into controllers) are implimented as "singletons." Only one $log, etc. **$scope is an exception to this rule, there is an unchanging root scope, but passing $scope to controllers creates a new "child $scope"**
+
+*Service* = singleton object that can contain properties/functions etc. 
+Anything you want to have access to on a service you have to put on the "THIS" object. Differece between factories and services is you have to define and return your own object with factories, while this is automatically done (with "this" object) in services. Useful because they can be injected into as many controllers as you want.
+
+app.service('myService', function() {
+    //var this = {};
+    this.myVar = 'variable name';
+    this.myFunc = function() {};
+    //return this;
+})
+
+Services are viewed by angular as constructor functions, that's why we use 'this.'
+
+    1. Define service.
+    2. Inject it into controller the same way you'd inject built-in services.
+    3. Use service functions/variables in controllers like: 
+            $scope.func = myService.sayHi();
+
+var app = angular.module('quoteBook', []); <--- [] signifies "setting" or creating a new module, removing the array signifies "getting" an existing module.
+
+*Put heavy logic in services that you can inject to any controller you create. Makes things very modular and testable.
+
+*Normalize*: to make something consistent to a standard. For example, in javascript you can't include dashes (-) in your variable names. Angular automatically converts (NORMALIZES) attribute names (ex: result-link) to JS variable names (ex: esultLink) and vice-versa.
+
+- We can create our own reusable *custom directives* to avoid repetition, makes html cleaner and more manageable. Great when a piece of UI will be used more than once. Here's an example of how to write one...
+
+myApp.directive("searchResult", function() {
+    return {
+        restrict: AECM <--how you want your attribute to be used (Attribute, Element, Class-name, Comment). Defaults to attribute and element (usually all you'll need).
+        template: '<html code that you want to reuse>',
+            OR
+        templateUrl: relative location of directive html content (usually in "directives" folder.
+        replace: true <-- eliminates custom directive code from html.
+        }
+    });
+
+IN HTML
+
+<search-result></search-result>
+              OR
+<div search-result></div>
+
+Custom directives can access *parent $scope* by default. Can cause problems. We can "isolate the $scope" for our custom directives by adding one more property --> scope: {}. Now this directive can't accidently change the parent $dcope.
+
+
+this.getData = function() {
+    return $http({
+        method: 'GET',
+        url: 'http://swapi,co/api'
+        }).then(function(results <-- on success) {
+            console.log(reslts);
+        }, function(error <-- on rejected) {
+          //whatever
+        })
+    }
+    
+shorthand: return $http.get('url').then()
+
+Promise object that's returned immediately and allows the rest of the code to keep running, .then that makes actions based on "on success" and "on failure".
+
+Service similar to constructor function.
+
+{{ ONE WAY BINDING }} | <input ng-model="text"/> {{text}} <-- TWO WAY BINDING
+
+angular.module('app).service('service1', function($q) {
+
+    this.getUnicorns = function() {
+    
+        var deferrer = $q.defer();
+        
+        $timeout(function() {
+            deferrer.resolve('unicorns');
+            deferrer.reject('unicorns do not exist);
+        }, 2000);
+        
+        return deferrer.promise;
+    }
+    
+});
+
+*$q*: A service that helps you run functions asynchronously, and use their return values (or exceptions) when they are done processing. $q allows us to hold off on sending our data over until we're ready. $q is AN OBJECT! Console.log things to see "what's under the hood".
+
+- deffered.resolve(var)  --> var equals whatever is passed to controller.
+
+
+
+PROMISE: Allows program to continue running, whenever api call (or whatever) comes back, the code specified when the promise was made will run.
+
+"PROMISE CHAINING"
+
+Invoking $.defer() gives us an OBJECT, with different properties (and objects) on it (.resolve(function), .reject(function) .promise(object) etc)
+
+
+LESS or SASS (self teaching)
+
+Goal: 
+
+1. type something into text box, when you click "get forecast", have whatever you typed appear on the forecast page.
+
+
+CREATING A FACTORY
+
+myApp.factory('dataService', function() {
+    var service = {};
+    
+    service.getData = function() {
+        
+    }
+    
+    return service;
+});
+
+
+**FIREBASE**
+
+1. Add Firebase library script tag to your <head> section.
+2. To access your Firebase database, you'll first need to create a REFERENCE (References are created using a URL that specifies which data you want to access).
+    var ref = new Firebase('http://...');
+3. You can use the reference you just created to WRITE DATA to your Firebase database using the *set()* function.
+    ref.set();  --- The set() function can also be used to write objects --> ref.set({name: name, text: text}); When objects are written to the database, the structure of the object is mapped to database locations.
+
+- Firebase relies on a library that you include in your app.
+- A core concept of the Firebase database is that *every piece of data has its own URL*, You can use this URL to access your data in several ways:
+    - From any Firebase client library
+    - From our REST API
+    - By entering it in any browser.
+- "If it can be represented as JSON, it can fit in the database."
+
+Angular + Firebase = THREE way binding between your HTML, your JAVASCRIPT, and the FIREBASE database.
+
+AngularFire: Angular module that makes it easy to wire up firebase as the backend for your Angular application.
+
+FIREBASE IS YOUR BACKEND.
+- Database: NoSQL data-store. Returns JSON from a RESTful API. Whenever data is updated in Firebse, it sends the update down to every listening client.
+- Authentication.
+- Sequrity.
+- Hosting.
+
+HOW TO STORE DATA:
+
+var ref = new Firebase('url');
+
+
+1. Link up firebase and angularFire.
+2. Add firebase as a dependency on your module.
+3. Need a "reference" to work with (firbase url link to data) --> var ref = new Firebase('url')
+4. Inject $firebaseObject, $firebaseArray, $firebaseAuth as necesary into stuff.
+5. Use angularfire special methods such as $bindTo, $add, $save, $remove - reference docs for this.
+
+- CONSTANT: value that won't change. Like any other service; we're able to inject it anywhere and grab its properties.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,324 @@
+**JS ROADTRIP NOTES**
+----------------------
+
+- map() method: works like a loop and applies a function to each array index, storing results in new array. (var results = array.map(*some function here*));
+- shift() always returns the first element in an array, whether you get rid of it, or store it in a new variable.
+- Closure functions can even modify bound variables in the background.
+- Closures bind values at the very last moment (loop example). The function's actual RETURN is the true "moment of closure". To fix this you can return immediately within the loop iteration, halting the progression of the loop OR
+- Hoisting is not something that you DO...it's something that happens that you need to be aware of. LOAD ORDER CONCEPT. Function expressions are NEVER hoisted, they are always treated as assignments (variables set to undefined). Function declarations are hoisted in their entirety and loaded into memory.
+- Objects are containers of related information. "Composite value".
+- Object properties will also accept variables (can initialize variables outside of object and then REFERENCE them inside the object. Because these variables are held by reference, changing the object's properties also changes the external value.
+- An object is like an array whose indices can be accessed with strings (with quotes) instead of numbers. Only bracket string, no dot string. 
+- delete myObj.property; (delete command asks "is this property gone?" Will return true even if the property specified was never there).
+
+-------------------------
+
+- Syntax parser: A program that reads your code and determines what it does and if its grammar is valid. Someone else wrote a "compiler" program to translate your code for the computer. There's a program that translates your code into something the computer can understand. This "compiler" can also do extra stuff.
+
+- Lexical environment: Where something *sits physically* in the code you write. "Lexical" means "having to do with words or grammar". A lexical environment exists in programming languages which WHERE you write something is important.
+
+- Execution context: A 'wrapper' to help manage the code that is currently running. It can contain things beyond what you've written in your code (like global object, 'this' etc.) Whenever code is run, it's run inside an execution context.
+
+- Name/value pair: A name which maps to a unique value. Name can only have one value in any given context, that value may be more name/value pairs. (example: name = 'bob').
+
+- OBJECT: A collection of name/value pairs. <-- It's just that simple!
+
+Base execution context = "global" (not inside a function) execution context. Global execution context creates two things automatically for you (even if you write NO CODE).
+
+    1. Global object. In the case of browsers, this is "window".
+    2. special variable called 'this'.
+    
+At the global level, the above two things are equal.
+
+When you create variables and functions in the global scope, they get *attached* to the global object!!
+
+Execution context is created in two phases: 
+
+PHASE ONE: CREATION phase: goes through code and sets up global object, 'this', links to the outer environment, and memory space for variables and functions ('hoisting'). Before your code is executed line by line, JS "sets up" memory space for functions (in their entirety) and variables (just initialises them as 'undefined') - for this reason it is a bad idea to RELY on hoisting. Doesn't set values for variables in creation phase.
+    
+PHASE TWO: EXECUTION phase. Already has everything set up from the creation phase. Now it runs code *line-by-line*
+    
+    1. Puts things in memory.
+    2. Runs code line by line.
+    
+- In JS 'undefined' !== 'not defined'. Undefined is a special keyword/value that means the variable's value hasn't been set. 'Not defined' means 'I don't have this in memory at all.' NEVER set variables equal to undefined, let in mean 'I have never set this variable's value.'
+    
+- Single threaded: One command at a time. Only one commmand executed at a time. 
+- Synchronous: One at a time. Code is executed one line at a time, in the order that it appears.
+    
+    Javascript is *single threaded* and *synchrounous* in its behavior.
+
+INVOCATION: running a function...with ().
+
+Anytime you invoke a function, a new execution context is created and put on the "execution/call stack"...goes through creation phase and then executes the code within that function *line-by-line*. Stops at every function invocation and creates ANOTHER execution context, jumps into that function and executes that function line by line. When current execution context finishes (when the function is done running), that function is "popped" off the stack, and context underneath is run (until finished), at which point it's popped off.
+    
+- Variable environment: where the variables live (and how they relate to each other in memory). 'WHERE IS THE VARIABLE?' Every execution context (function invocation) has its own variable environment (scope).
+     
+- When we request a variable, JS does more than look in the variable environment of the currently executing context. Looks for variables in the "outer reference". Every execution context has a reference to the "outer environment."
+
+- Scope chain: links of lexical outer environment references.
+
+- SCOPE: Where a variable is *available* in your code.
+
+You can use both 'LET' and 'VAR' in ES6.
+
+- Asynchronous: more than one at a time.
+
+In addition to the execution stack, there's also an "event queue" that won't be processed until the execution stack is EMPTY. JS isn't really asynchronous, runs code line-by-line then deals with events after call stack has been cleared. <-- How JS (which is synchronous) deals with asynchronous events.
+    
+"Dynamic typing": you don't tell the engine what type of data a variable holds, it figures it out while the code is running. Vs. "static typing".
+    
+Primitive type: A type of data that represents a single value. NOT AN OBJECT.
+    - undefined: lack of existence (leave for the JS engine).
+    - null: lack of existence (use in your code).
+    - Boolean.
+    - Number.
+    - String.
+    - Symbol (used in ES6).
+    
+- Operator: A special FUNCTION that is (syntactically) written differently ('infix notatation'). Operators (addition, subtraction etc) are *function calls* that RETURN A VALUE. OPERATORS ARE FUNCTIONS.
+    
+    - Operator precedence: which operator function gets called first. PEMDAS.
+    - Associativity: what order operator functions get called in when they have the *same precedence* (left to right vs. right to left). JAVASCRIPT USES RIGHT TO LEFT for some operators and LEFT TO RIGHT for others.
+            var a = 2, b = 3, c = 4;
+            a = b = c;
+            => all three equal 4!
+    
+    - Coercion: converting a value from *one type to another*
+    
+When coerced to a Number, false becomes 0 and true becomes 1. Undefined becomes NaN, null becomes 0. STRICT EQUALITY/INEQUALITY WILL 'SAVE YOUR LIFE' by preventing weird coercion bugs.
+
+Anything between parentheses in an 'if statement' will be converted to a *boolean*.
+If (a) { <-- if a is something...
+    console.log('something is there');
+}
+We can use coercion to check if variables have a value (that's not 'falsy').   
+    
+If you pass the OR operator two values, it will return the (first one) that can be converted to true. 0 || 1 => 1 Can be used to say "if something doesn't exist, use this default value instead." name = name || 'your name here'
+    
+Html <script> tags don't run JS code in separate files, it stacks it all onto one big 'stack', variables can override each other if you're not careful. Can use || to check if variables already exist. <-- common in many frameworks/libraries.
+
+=============================
+OBJECTS AND FUNCTIONS
+=============================
+
+Objects can contain: 
+    1. Primitive properties.
+    2. Object properties.
+    3. Functions (methods).
+    
+var person = new Object();
+person["firstname"] = "Logan";
+person.lastname = "Marshall";
+**DOT + BRACKETS ARE FUNCTIONS**
+var person = {};
+var person = {
+    firstname: 'Logan', 
+    lastname: 'Marshall'
+}
+    
+Can create objects using object literal notation on the fly and pass them into functions at the moment of execution. You can create objects WHEREVER YOU WANT.
+
+- Namespace: a container for variables and functions. Typically used to keep variables and functions with the same name separate. We don't have namespaces in JS...but we can use objects to mimic this functionality english.greet = 'Hello', spanish.greet = 'Hola'
+    
+JSON is inspired by 'object literal notation'. Properties have to be wrapped in quotes in JSON. JSON.stringify(objectliteral) <-- converts object to JSON string
+
+var jsonValue = JSON.parse('{"firstname: "Mary"}'); <-- converts JSON back.
+    
+In Javascript *functions are objects* Everything you can do with other types you can do with functions. Assign 'em to variables, pass 'em around, create 'em on the fly. 'Name' and 'code' are properties of the function object. "Functional programming."
+    
+- Expression: A unit of code that results in a value.
+- Statements: just does work, doesn't result in a value.
+    
+function greet() {
+    alert('hi');          <-- function statement; Available at any point in code.
+}
+var greet = function() {
+    alert('hi');          <-- function expression; returns object. Set to undefined                                   during 'set up' phase like all variables (hoisting).
+}
+    
+- By value: Set by COPYING value into two separate spots in memory (this happens with *PRIMITIVE TYPES*).
+- By reference: Two names point to the same place; both have the same value (this happens with *ALL OBJECTS* (including functions). EQUALS OPERATOR SETS UP BRAND NEW MEMORY SPACE (NEW ADDRESS), not when copying an object (a = b), but when creating a new object (c = {greet: 'hi'}).
+    
+MUTATE: to change something. IMMUTABLE: can't be changed.
+    
+If you're simply invoking a function (that's simply a function statement/expression), 'this' will still point to the global object.
+    
+function a() {
+    this.greet = 'hello' <-- attaches property to the global object.
+}
+
+In the case where a function is a method attached to an object the 'this' keyword points to the object that that method is a part of. BUT if you use 'this' inside a nested function, 'this' doesn't point to the outer object but rather the global object (many people think this is a bug). Can get around this by using the 'self = this' trick.
+
+var c = {
+    name: 'The c object',
+    log: function() {
+        var self = this;
+        
+        self.name = 'Updated c object';
+        console.log(self);
+        
+        var setname = function(newname) {
+            self.name = newname;   
+        }
+        setname('Updated again! The c object');
+        console.log(self);
+    }
+}
+    
+'Arguements': keyword that contains a list of all the parameters that you pass to a function. 'Array-like.' New approach called 'SPREAD' in ES6.
+ARGUEMENTS: what you pass to a function.
+You can skip passing in arguements and functions will still run (with the parameter values set to 'undefined'). Can set up default parameters like name = name || 'bob'
+    
+-JS 'syntax parser' automatically inserts semicolons at the end of lines if they're missing. YOU SHOULD ALWAYS ADD YOUR OWN SEMICOLONS. Putting objects on a new line etc. can cause bugs (put brackets on the same line as object names, if statements etc.) 
+
+- JS is very liberal about allowing 'whitespace' in code.
+
+Immediately invoked function expression (IIFE): By wrapping your code in an IIFE you ensure that it doesn't interfere with or crash into any other code in your app. IIFES create new 'execution context'/'scope'. Can still impact global object by passing it in as a parameter.
+
+    var greeting = function(name) {
+        console.log('Hello ' + name);
+    }();
+    
+    (function (name) {
+        return 'Hello ' + name;   <-- parens tell us this is a function expression.
+    })();
+    
+*UNDERSTANDING CLOSURES*
+    
+function greet (whattosay) {
+    return function(name) {
+        console.log(whattosay + ' ' + name);
+    }
+}
+
+Under normal circumstances, the JS engine would "garbage collect" memory space. But functions (defined inside of other functions) still have a reference to variables in their outer environment. Scope chain will remain intact even after execution context has finished. Closures are simply a feature of Javascript, javascript engine 'creates' the closure, we as developers just take advantage of it.
+    
+In notorious closure example where for loop runs and then functions log unexpected value, the functions aren't RUN in the for loop...they're run WHEN WE EXECUTE THE FUNCTIONS. They are pushed into an array and then -- because of closures -- each function holds a reference to the current value of I, which, after the function has finished running is the final number. Then, when the function is called, it looks at the closure reference and logs that number.
+    
+**Every time you call a function it gets its own execution context, and any function created inside of it will point to that execution context.**
+
+----------------
+CLOSURE EXAMPLE
+----------------
+
+function makeGreeting(language) {
+ 
+    return function(firstname, lastname) {
+     
+        if (language === 'en') {
+            console.log('Hello ' + firstname + ' ' + lastname);   
+        }
+
+        if (language === 'es') {
+            console.log('Hola ' + firstname + ' ' + lastname);   
+        }
+        
+    }
+    
+}
+
+var greetEnglish = makeGreeting('en');
+var greetSpanish = makeGreeting('es');
+
+greetEnglish('John', 'Doe');
+greetSpanish('John', 'Doe');
+    
+
+Callback function: A function you *give to another function*, to be run when the other function is finished. So the function you invoke 'calls back' the function you gave it.
+
+--------------------
+CALL, APPLY AND BIND
+--------------------
+- Used to control what the 'this' variable ends up being when the execution context is created.
+
+- Functions are objects, and all functions have access to a call() method, a bind() method and an apply() method.
+
+- .bind creates a COPY of whatever function you're calling it on, and whatever object you pass to it is what 'this' points to. var logPersonName = logName.bind(person);
+
+- .call() EXECUTES the function it's attached to, allows you to set the 'this' variable and allows you to pass parameters to the function.
+    
+- .apply() is the same as .call but takes an array instead of parameters
+
+Used when "function borrowing"...using another object's method but having 'this' point to the object of your choice. Also used when "function currying"...creating a copy of a function but with some preset parameters; create a copy of a function with one or more parameters permenantly set. 
+    
+To limit repetition, we put work into functions. FUNCTIONAL PROGRAMMING.
+
+*Inheritance*: one object gets access to the properties and methods of another object. One object 'inherets' from another object.
+    - Classical inheritance: how its been done for a long time. Verbose + complicated.
+    - Prototypal: more flexible, extensible and easy to understand.
+
+All objects have a PROTOTYPE property, which is simply a reference to another object that can have properties and methods. If JS engine can't find a propery, it looks up the 'prototype chain' until it finds it. PROTOTYPE = special reference; where to look for properties and methods.
+
+The bottom of the prototype chain is the 'Object' (built in object that gives you access to certain properties and methods). This is why methods like pop(), length and toString work...because they exist on this built in 'Object'.
+
+- 'Reflection': an object can look at itself, listing and changing its properties and methods.
+
+if (obj.hasOwnProperty('firstname') {..} <-- checks if the object REALLY has a propery/method (not including those on its prototype).
+
+- can use _.extend (from underscorejs) to combine and compose objects.
+
+- When we say 'new', an empty object is created. Then it invokes the function (in which the 'this' keyword points to the newly created empty oobject). As long as the function doesn't return a value, the new object will be returned. Constructor functions are just functions (used to create objects). If you don't use 'new' in function constructors, objects will be set equal to 'undefined.' As convention Capitalize the name of the constructor.
+
+- BUILT IN constructor functions exist: new Number() (creates object that contains defined primitive), new String(), new Date() -- can use these to add methods to ALL numbers strings etc. (ex: String.protoype.isGreaterThan = function (limit) {
+                            return this.length > limit;
+                          }
+But these built in constructors are DANGEROUS. Because they don't really create primitive values, the create objects. Therefore Number(3) !== 3; Can be useful to use them for conversion between types.
+
+- Don't use 'for in loops' with arrays because arrays are objects and their values are added properties. Use regular for loop instead.
+
+'Object.create() creates and empty object with its prototype pointing at whatever you passed in. Override whatever you want by simply adding new properties and methods to the newly created object. Define an object that becomes the basis for all others. 'Pure prototypal inheritance.'
+
+*Polyfill*: Code that adds a feature that the engine may lack.
+
+- 'Syntactic sugar': a different way to type something that doesn't change how it works under the hood. (ex: 'class' in upcoming ES6).
+
+- Don't be intimidated when you see large 'initializations' of arrays and objects (useful to test software before getting real data from an api).
+
+- typeof: tells you the type of things (arrays return 'object' so be careful). Typeof(null) = object <-- bug.
+- instanceof: tells you whether or not you find any objects that are the same as the one you passed in anywhere up the prototype chain.
+
+- "use strict" must go at the top of a file or at the top of a function. Won't allow variable declaration without var. 
+
+- One of the best ways to learn is to learn from other's good code ('open source education'). Github is a great place to do this.
+
+- Method chaining: calling one method after the other and each method affects the parent object (ex: obj.method1().method2());
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    

@@ -1,0 +1,9 @@
+1. ESCAPE: Find outdoor adventures near me (model homepage design off 'http://www.mensjournal.com/adventure-races' NO 'https://www.harrys.com/jimmy-chin'). Take inspiration from: 'https://www.zozi.com/' Model map layout off: 'https://roadtrippers.com/map'
+
+    - Microadventures app.
+    - Hot springs locator.
+    - 
+
+2. FIND A HOT SPRING (meh).
+
+3. MORNING RITUAL TRACKER

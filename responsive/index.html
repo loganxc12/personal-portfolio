@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta charset="utf-8">
+  <title>Logan Marshall | Do Epic Shit</title>
+  <meta name="description" content="Portfolio for photographer Logan Marshall">
+  <meta name="author" content="Logan Marshall">
+
+  <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- FONT
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link href='https://fonts.googleapis.com/css?family=Abel' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Satisfy' rel='stylesheet' type='text/css'>
+
+  <!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/skeleton.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="css/popup.css">
+    
+  <!-- Scripts
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+
+  <!-- Favicon
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="icon" type="image/png" href="images/favicon.png">
+
+</head>
+    
+<body>
+
+<header class="main_nav green">
+    <div class="container">
+        <div class="twelve columns">
+            <div class="logo"><a href="#">LOGAN MARSHALL</a></div>
+        </div>
+    </div>
+</header>
+    
+<div class="container_main">
+    
+    <div class="row">
+        <div class="four columns portfolio">
+            <a class="image-link" href="images/rangeley.jpg"><img src="images/rangeley.jpg"/></a>
+        </div>
+        <div class="four columns portfolio">
+             <a class="image-link" href="images/dunes.jpg"><img src="images/dunes.jpg"/></a>
+        </div>
+        <div class="four columns portfolio">
+            <a class="image-link" href="images/badlands.jpg"><img src="images/badlands.jpg"/></a>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="four columns portfolio">
+            <a class="image-link" href="images/sheep.jpg"><img src="images/sheep.jpg"/></a>
+        </div>
+        <div class="four columns portfolio">
+            <a class="image-link" href="images/blackhills.jpg"><img src="images/blackhills.jpg"/></a>
+        </div>
+        <div class="four columns portfolio">
+            <a class="image-link" href="images/tetons.jpg"><img src="images/tetons.jpg"/></a>
+        </div>
+    </div>
+    
+    <div class="row" style="margin-bottom: 5%">
+        <div class="four columns portfolio">
+            <a class="image-link" href="images/lake.jpg"><img src="images/lake.jpg"/></a>
+        </div>
+        <div class="four columns portfolio">
+            <a class="image-link" href="images/pools.jpg"><img src="images/pools.jpg"/></a>
+        </div>
+        <div class="four columns portfolio">
+            <a class="image-link" href="images/yellow.jpg"><img src="images/yellow.jpg"/></a>
+        </div>
+    </div>
+    
+</div> <!--CONTAINER-->
+    
+<div class="row green">
+    <div class="container">
+        <div class="four columns">
+            <img class="avatar" src="images/Logan.jpg"/>
+        </div>
+        <div class="eight columns">
+            <h2 class="bio">About Logan Marshall</h2>
+            <p class="bio">Hi, I'm Logan Marshall. I'm an adventure traveler, health strategist and instigator of personal freedom. Like you, I'm on a journey to optimize my health and embody my deepest potential. Each week I write about the struggles we all face to chart healthy, meaningful and resilient lives in an undeniably turbulent age.</p>
+        </div>
+    </div>
+</div> <!--GREEN FEATURE ROW--> 
+    
+<footer>
+    <div class="container">
+        <div class="row twelve columns">
+            <ul class="social">
+                <li class="facebook"><a href="#"><i class="fa fa-facebook-square"></i></a></li>
+                <li class="twitter"><a href="#"><i class="fa fa-twitter-square"></i></a></li>
+                <li class="youtube"><a href="#"><i class="fa fa-youtube-play"></i></a></li>
+                <li class="instagram"><a href="#"><i class="fa fa-instagram"></i></a></li>
+                <li class="linked-in"><a href="#"><i class="fa fa-linkedin-square"></i></a></li>
+            </ul>
+        </div>
+        <div class="row twelve columns">
+            <p class="copyright">&copy; 2015 Logan Marshall. All Rights Reserved.</p>
+        </div>
+    </div>
+</footer>  
+    
+    
+<!-- End Document
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+<script src="scripts/magnific-popup.js"></script>
+<script type="text/javascript">
+    // Initialize popup as usual
+$('.image-link').magnificPopup({
+  type: 'image',
+  mainClass: 'mfp-with-zoom', // this class is for CSS animation below
+
+  zoom: {
+    enabled: true, // By default it's false, so don't forget to enable it
+
+    duration: 300, // duration of the effect, in milliseconds
+    easing: 'ease-in-out', // CSS transition easing function
+
+    // The "opener" function should return the element from which popup will be zoomed in
+    // and to which popup will be scaled down
+    // By defailt it looks for an image tag:
+    opener: function(openerElement) {
+      // openerElement is the element on which popup was initialized, in this case its <a> tag
+      // you don't need to add "opener" option if this code matches your needs, it's defailt one.
+      return openerElement.is('img') ? openerElement : openerElement.find('img');
+    }
+  }
+
+});
+</script>
+</body>
+</html>

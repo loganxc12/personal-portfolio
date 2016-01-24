@@ -1,0 +1,37 @@
+var express = require('express');  <-- Must install in terminal using npm.
+var app = express();
+var bodyParser = require('body-parser');  <-- Must install in terminal using npm.
+//bodyParser parses body and allows you to use it as a JS object.
+app.use(bodyParser.json());
+
+app.get('/endpoint', function(request - incoming, response - outgoing) {
+    //when I recieve a get request to this endpoint, I'll do what's in this function.
+    res.send('hi');
+})
+
+app.listen(port#, function() {
+    console.log('Server listening on port 3000');
+})
+
+//Postman: way to send stuff to IP addresses and endpoints...and recieve stuff back.
+//localhost(*house*):3000(*door*)/endpoint(*room*) --get/push are *people* in room hired to do a job and listening for their specific requests.
+//A server is a dedicated program constantly listening for specific requsts and responding.
+
+GET - get something from the server. 
+POST - Create something on the server.
+PUT - Update data/info on the server.
+DELETE - remove something from the server.
+
+'BODY' = the content of your message (used in POST and PUT requests)
+
+MONGO - Database that you house on your local server.
+
+REQ.QUERY
+REQ.PARAMS
+
+var session = require('express-session');
+app.use(sesson({
+  secret: 'kjghgioaetsigjaesthkjy5',
+  saveUninitialized: true, <-- //what tells session to save a new key-value pair for every request that doesn't already have a key value pair
+  resave: true
+}))

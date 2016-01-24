@@ -1,0 +1,24 @@
+Questions "scope answers: where do variables live? Where are they stored? How does our program find them when it needs them?
+
+Any snippet of javascript has been "compiled" (tokenized, parsed, turned into executable code) before (usually right before!) it's executed. Compiles code FIRST, then is ready to execute it.
+
+Characters in scope conversation: 
+
+1. Engine: responsible for start-to-finish compilation and execution of our JavaScript program.
+
+2. Compiler: one of Engine's friends; handles all the dirty work of parsing and code-generation.
+
+3. Scope: another friend of Engine; collects and maintains a look-up list of all the declared identifiers (variables), and enforces a strict set of rules as to how these are accessible to currently executing code.
+
+**For you to fully understand how JavaScript works, you need to begin to think like Engine (and friends) think, ask the questions they ask, and answer those questions the same**
+
+Two distict actions are taken for variable assignment: 
+
+    1. Compiler declares a variable (if not previously declared in the current scope).
+    2. When executing, Engine looks up the variable in Scope and assigns to it, if found.
+
+"LHS" vs. "RHS" look-up. Left hand side vs. right hand side (where variable appears in assignment operation).
+"RHS" means "retrive the variable's source value." "Who's the target of the assignment (LHS)"..."who's the source of the assignment (RHS)".
+
+    console.log( a ); <-- RHS
+    a = 2; <-- LHS
